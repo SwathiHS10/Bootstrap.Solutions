@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Bootstrap.Interactors.WeatherForecasts.Commands.AddWeatherForecast;
 using Bootstrap.Interactors.WeatherForecasts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -46,5 +47,14 @@ public class WeatherForecastController : ControllerBase
     public async Task<ActionResult> GetWeatherForecastsV2()
     {
         return Ok(await Task.FromResult("hello from v2"));   
+    }
+    [HttpPost("add")]
+    [MapToApiVersion("1.0")]
+    public async Task<ActionResult> AddWeatherForecastsV1([FromBody] AddWeatherForecastRequest model)
+    {
+        var result = await _mediator.Send(new AddWeatherForecast
+                    { Payload = model
+                    });
+        return Ok(result);
     }
 }
